@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import classes from "./CartButton.module.css";
 import { uiActions } from "../../store/ui-slice";
@@ -7,6 +7,7 @@ import { uiActions } from "../../store/ui-slice";
 const CartButton = (props) => {
   // Initialize the dispatch function using the useDispatch hook.
   const dispatch = useDispatch();
+  const cartQuantity = useSelector((state) => state.cart.totalQuantity);
 
   // Define a function to handle the click event and toggle the cart visibility using Redux.
   const toggleCartHandler = () => {
@@ -18,7 +19,7 @@ const CartButton = (props) => {
   return (
     <button className={classes.button} onClick={toggleCartHandler}>
       <span>My Cart</span> {/* Display "My Cart" text */}
-      <span className={classes.badge}>1</span>{" "}
+      <span className={classes.badge}>{cartQuantity}</span>{" "}
       {/* Display a badge (e.g., cart item count) */}
     </button>
   );

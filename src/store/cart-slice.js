@@ -5,7 +5,7 @@ const cartSlice = createSlice({
   // Specify the name of the slice, which will be used to generate action type strings.
   name: "cart",
 
-  // Define the initial state for this slice, including an empty "items" array and a "totalQuantity" set to 0.
+  // Define the initial state for this slice, including an empty "items" array and a "totalQuanity" set to 0.
   initialState: { items: [], totalQuantity: 0 },
 
   // Define a set of reducer functions to handle state changes.
@@ -16,14 +16,14 @@ const cartSlice = createSlice({
       const newItem = action.payload;
 
       // Check if the item already exists in the cart by looking for an item with the same "id."
-      const existingItem = state.items.find(
-        (item) => item.itemId === newItem.id
-      );
+      const existingItem = state.items.find((item) => item.id === newItem.id);
+
+      state.totalQuantity++;
 
       // If the item doesn't exist in the cart, add it as a new item.
       if (!existingItem) {
         state.items.push({
-          itemId: newItem.id,
+          id: newItem.id,
           price: newItem.price,
           quantity: 1,
           totalPrice: newItem.price,
@@ -37,17 +37,12 @@ const cartSlice = createSlice({
     },
     // Define the "removeItemFromCart" reducer function (currently empty) for potential future use.
     removeItemFromCart(state, action) {
-      // Extract the item's id from the action payload.
       const id = action.payload;
-
-      // Find the existing item in the cart with the matching id.
-      const existingItem = state.items.find((item) => item.itemId === id);
-
-      // Check if the item quantity is 1, and if so, remove it from the cart.
+      const existingItem = state.items.find((item) => item.id === id);
+      state.totalQuantity--;
       if (existingItem.quantity === 1) {
-        state.items = state.items.filter((item) => item.itemId !== id);
+        state.items = state.items.filter((item) => item.id !== id);
       } else {
-        // If the item quantity is greater than 1, decrement the quantity and update the total price.
         existingItem.quantity--;
         existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
       }
