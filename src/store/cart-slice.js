@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // Create a Redux slice for managing the "cart" state.
-createSlice({
+const cartSlice = createSlice({
   // Specify the name of the slice, which will be used to generate action type strings.
   name: "cart",
 
-  // Define the initial state for this slice, including an empty "items" array and a "totalQuanity" set to 0.
-  initialState: { items: [], totalQuanity: 0 },
+  // Define the initial state for this slice, including an empty "items" array and a "totalQuantity" set to 0.
+  initialState: { items: [], totalQuantity: 0 },
 
   // Define a set of reducer functions to handle state changes.
   reducers: {
@@ -36,6 +36,25 @@ createSlice({
       }
     },
     // Define the "removeItemFromCart" reducer function (currently empty) for potential future use.
-    removeItemFromCart(state) {},
+    removeItemFromCart(state, action) {
+      // Extract the item's id from the action payload.
+      const id = action.payload;
+
+      // Find the existing item in the cart with the matching id.
+      const existingItem = state.items.find((item) => item.itemId === id);
+
+      // Check if the item quantity is 1, and if so, remove it from the cart.
+      if (existingItem.quantity === 1) {
+        state.items = state.items.filter((item) => item.itemId !== id);
+      } else {
+        // If the item quantity is greater than 1, decrement the quantity and update the total price.
+        existingItem.quantity--;
+        existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
+      }
+    },
   },
 });
+
+export const cartActions = cartSlice.actions;
+
+export default cartSlice;
