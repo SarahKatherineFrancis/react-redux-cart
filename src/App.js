@@ -5,7 +5,7 @@ import Cart from "./components/Cart/Cart";
 import Layout from "./components/Layout/Layout";
 import Products from "./components/Shop/Products";
 import Notification from "./components/UI/Notification";
-import { sendCartData } from "./store/cart-slice";
+import { sendCartData, fetchCartData } from "./store/cart-actions";
 
 // Define a flag to track the initial render.
 let isInitial = true;
@@ -16,9 +16,20 @@ function App() {
   const dispatch = useDispatch();
 
   // Access various pieces of state from the Redux store.
-  const showCart = useSelector((state) => state.ui.cartIsVisible); // Get the cart visibility state.
-  const cart = useSelector((state) => state.cart); // Get the cart data.
-  const notification = useSelector((state) => state.ui.notification); // Get notification data.
+
+  // Get the cart visibility state.
+  const showCart = useSelector((state) => state.ui.cartIsVisible);
+
+  // Get the cart data.
+  const cart = useSelector((state) => state.cart);
+
+  // Get notification data.
+  const notification = useSelector((state) => state.ui.notification);
+
+  // useEffect to fetch initial cart data when the component mounts.
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
 
   // Use useEffect to handle cart data updates.
   useEffect(() => {
@@ -44,8 +55,8 @@ function App() {
         />
       )}
       <Layout>
-        {/* Render the Cart component if "showCart" is true. */}
-        {showCart && <Cart />} {/* Conditionally render the Cart component. */}
+        {/* Conditionally render the Cart component if "showCart" is true. */}
+        {showCart && <Cart />}
         <Products />
       </Layout>
     </>
