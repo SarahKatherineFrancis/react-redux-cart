@@ -22,7 +22,12 @@ export const fetchCartData = () => {
       // Fetch cart data and dispatch an action to replace the current cart state.
       const cartData = await fetchData();
       console.log(cartData);
-      dispatch(cartActions.replaceCart(cartData));
+      dispatch(
+        cartActions.replaceCart({
+          items: cartData.items || [], // Ensure there are items or provide an empty array.
+          totalQuantity: cartData.totalQuantity,
+        })
+      );
     } catch (error) {
       // Show an error notification if fetching cart data fails.
       dispatch(
@@ -54,7 +59,10 @@ export const sendCartData = (cart) => {
         "https://react-http-9b836-default-rtdb.firebaseio.com/cart.json",
         {
           method: "PUT",
-          body: JSON.stringify(cart),
+          body: JSON.stringify({
+            items: cart.items,
+            totalQuantity: cart.totalQuantity,
+          }),
         }
       );
 

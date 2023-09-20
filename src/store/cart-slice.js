@@ -5,8 +5,9 @@ const cartSlice = createSlice({
   // Specify the name of the slice, which will be used to generate action type strings.
   name: "cart",
 
-  // Define the initial state for this slice, including an empty "items" array and a "totalQuantity" set to 0.
-  initialState: { items: [], totalQuantity: 0 },
+  // Define the initial state for this slice, including an empty "items" array, a "totalQuantity" set to 0,
+  // and a "changed" flag to track if the cart state has changed.
+  initialState: { items: [], totalQuantity: 0, changed: false },
 
   // Define a set of reducer functions to handle state changes.
   reducers: {
@@ -25,6 +26,9 @@ const cartSlice = createSlice({
 
       // Increment the total quantity in the cart.
       state.totalQuantity++;
+
+      // Set the "changed" flag to true to indicate a change in the cart.
+      state.changed = true;
 
       // If the item doesn't exist in the cart, add it as a new item.
       if (!existingItem) {
@@ -48,6 +52,9 @@ const cartSlice = createSlice({
 
       // Decrement the total quantity in the cart.
       state.totalQuantity--;
+
+      // Set the "changed" flag to true to indicate a change in the cart.
+      state.changed = true;
 
       if (existingItem.quantity === 1) {
         // If the item quantity is 1, remove it from the cart.

@@ -28,6 +28,7 @@ function App() {
 
   // useEffect to fetch initial cart data when the component mounts.
   useEffect(() => {
+    // Dispatch an action to fetch cart data from the server.
     dispatch(fetchCartData());
   }, [dispatch]);
 
@@ -39,8 +40,11 @@ function App() {
       return;
     }
 
-    // Dispatch an action to send cart data to the server when the cart state changes.
-    dispatch(sendCartData(cart));
+    // Check if the cart data has changed.
+    if (cart.changed) {
+      // Dispatch an action to send updated cart data to the server.
+      dispatch(sendCartData(cart));
+    }
   }, [cart, dispatch]); // Run this effect whenever the "cart" state changes.
 
   // Render the App component within a Layout, conditionally rendering the Cart component based on the "showCart" value.
