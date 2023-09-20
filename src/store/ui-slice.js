@@ -6,7 +6,7 @@ const uiSlice = createSlice({
   name: "ui",
 
   // Define the initial state for this slice, including a boolean flag "cartIsVisible."
-  initialState: { cartIsVisible: false },
+  initialState: { cartIsVisible: false, notification: null },
 
   // Define a set of reducer functions to handle state changes.
   reducers: {
@@ -14,6 +14,13 @@ const uiSlice = createSlice({
     toggle(state) {
       // In this reducer, toggle the "cartIsVisible" value by negating it (switching between true and false).
       state.cartIsVisible = !state.cartIsVisible;
+    },
+    showNotification(state, action) {
+      state.notification = {
+        status: action.payload.status,
+        title: action.payload.title,
+        message: action.payload.message,
+      };
     },
   },
 });
